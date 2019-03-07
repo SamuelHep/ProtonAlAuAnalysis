@@ -1,0 +1,5 @@
+This repository is responsible for performing the various corrections associated
+with the centrality determination. The data files in this repository are the
+output from StRefMultExtendedCorrCalibration. The class in this repository is 
+responsible for reading and querying the data files so that event by event
+corrections can be performed while runnin over the data.

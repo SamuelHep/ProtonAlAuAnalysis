@@ -1,0 +1,55 @@
+This is a small codebase designed to allow the user to obtain
+pariticle identification functions for from RCF and use them
+in their analysis code anywhere.
+
+Author: Christopher Flores (chrflores@ucdavis.edu)
+Repo:   https://bitbucket.org/chris_flores/particleinfo
+Clone: 	git clone https://chris_flores@bitbucket.org/chris_flores/particleinfo.git
+
+Contributors: Put your name here if you made a change.
+
+OVERVIEW:
+	The Bichsel curves as a function of beta*gamma are stored in root
+	files in the PidFunctions_Data directory. Since the calibrations
+	can change from year to year we store the bichsel functions for
+	different star library versions. Both the Bichsel curve using the
+	truncated mean method and the Bichsel curve using the most probable
+	method are stored in the same file. 
+
+ADDING NEW PID FUNCTIONS:
+       You can add new pid functions to the PidFunctions_Data
+       directory by using the provided shell script. However, since you 
+       will need the STAR libraries you will need to be on RCF. To add 
+       new pid functions do the following:
+       	  ./CollectBichselFunctions.csh <STAR_LIBRARY_VERSION>
+       Where <STAR_LIBRARY_VERSION> is something like SL15e.
+
+BASIC USAGE:
+      With the exception of adding new pid functions, this package can
+      be used independently of the STAR software libraries. As a
+      standalone package you can create a ParticleInfo object in a
+      root session in the following way.
+      1. Move to the ParticleInfo directory
+      	 $ cd particleinfo
+
+      2. Start a ROOT session
+      	 $ root -l
+
+      3. Compile and Load the source files **
+      	 root[] .L ParticleInfo/ParticleInfo.cxx+
+
+      4. Create a ParticleInfo Object (see the source code for constructor options)
+      	 The first argument tells the class which library to use. The second
+	 argument (false by default) tells the class whether you want to create
+	 the PID curves for for the defined particles species. There is also a
+	 thrid argument (also option) to tell the class which version of the
+	 of the bichsel cruve you want TRUNCATED or MOSTPROBABLE. By default
+	 this is set to return the TRUNCATED curve.
+      	 root[] ParticleInfo *particleInfo = new ParticleInfo("SL16a",true)
+
+      5. You can then access the pid curves for defined particle species in the
+      	 form of TF1 object by doing:
+	 root[] TF1 *pionFunction = particleInfo->GetBichselFunction(PION)
+
+      **For an example of how to incorporate this into a larger analysis see:
+      	    https://bitbucket.org/chris_flores/davisdstanalysis
